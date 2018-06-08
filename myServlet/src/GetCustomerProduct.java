@@ -81,7 +81,9 @@ public class GetCustomerProduct extends HttpServlet {
 			
 			Statement statement = connection_.createStatement(); 
 			
-			String myQuery = "SELECT customer.CId, CName, CCity, CAge, CNumber, SUM(TQnt) as NProduct FROM customer,transaction WHERE customer.CId = transaction.CId GROUP BY transaction.TId HAVING SUM(TQnt)>" + NProd + " ORDER BY customer.CId ASC"; // Select from multiple relations, GROUP BY and HAVING are in this query
+			String myQuery = "SELECT customer.CId, CName, CCity, CAge, CNumber, SUM(TQnt) as NProduct FROM customer," 
+			 + " transaction WHERE customer.CId = transaction.CId GROUP BY transaction.CId HAVING SUM(TQnt)>" + NProd 
+			 + " ORDER BY customer.CId ASC"; // Select from multiple relations, GROUP BY and HAVING are in this query
 			
 			ResultSet result = statement.executeQuery(myQuery);
 			

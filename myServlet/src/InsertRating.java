@@ -133,10 +133,20 @@ public class InsertRating extends HttpServlet {
 				return;
 			}
 			
-			String insertSqlStmt = "INSERT INTO rating VALUES (" + CId + "," + BId + "," + RRating + ");";
-			statement.executeUpdate(insertSqlStmt);
+			ResultSet resultA = statement.executeQuery("SELECT * FROM rating WHERE CId =" + CId + " AND BId = " + BId);
 			
-			printMsg("Transaction successfully inserted!", writer, request);
+			if(resultA.next()) {
+				String insertSqlStmt = "UPDATE rating SET RRating = " + RRating + " WHERE CId = " + CId + " AND BId = " + BId;
+				statement.executeUpdate(insertSqlStmt);
+				
+				printMsg("Rating updated successfully!", writer, request);
+			}
+			else {
+				String insertSqlStmt = "INSERT INTO rating VALUES (" + CId + "," + BId + "," + RRating + ");";
+				statement.executeUpdate(insertSqlStmt);
+			
+				printMsg("Rating successfully inserted!", writer, request);
+			}
 		}
 		catch(SQLException exc) {
 			exc.printStackTrace();

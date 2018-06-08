@@ -69,7 +69,9 @@ public class GetPhoneNumber extends HttpServlet {
 				return;
 			}
 			
-			String myQuery = "SELECT DISTINCT customer.CId, CName, CNumber FROM customer, transaction, beer WHERE customer.CId = transaction.CId AND beer.BId = transaction.BId AND BName = '" + BName + "' ORDER BY customer.CId ASC";
+			String myQuery = "SELECT DISTINCT customer.CId, CName, CNumber FROM customer, transaction, beer WHERE " 
+					+ "customer.CId = transaction.CId AND beer.BId = transaction.BId AND BName = '" + BName 
+					+ "' ORDER BY customer.CId ASC"; 
 			
 			ResultSet result = statement.executeQuery(myQuery);
 			

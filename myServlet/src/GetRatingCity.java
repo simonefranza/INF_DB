@@ -69,7 +69,8 @@ public class GetRatingCity extends HttpServlet {
 				return;
 			}
 			
-			String myQuery = "SELECT customer.CId, CName, CCity, ROUND(AVG(RRating),2) as AverageRating FROM customer, rating WHERE customer.CId = rating.CId AND CCity = '" + CCity + "' GROUP BY rating.CId ORDER BY customer.CId ASC";
+			String myQuery = "SELECT customer.CId, CName, CCity, ROUND(AVG(RRating),2) as AverageRating FROM customer, " 
+			+ " rating WHERE customer.CId = rating.CId AND CCity = '" + CCity + "' GROUP BY rating.CId ORDER BY customer.CId ASC"; // Select from multiple relations, GROUP BY are in this query
 			
 			ResultSet result = statement.executeQuery(myQuery);
 			
@@ -98,7 +99,7 @@ public class GetRatingCity extends HttpServlet {
 				writer.println("<td>" + result.getInt("CId") + "</td>"); 
 				writer.println("<td>" + result.getString("CName") + "</td>"); 
 				writer.println("<td>" + result.getString("CCity") + "</td>"); 
-				writer.println("<td>" + result.getInt("AverageRating") + "</td>"); 
+				writer.println("<td>" + result.getFloat("AverageRating") + "</td>"); 
 				writer.println("</tr>");
 			}
 			writer.println("</table>");
