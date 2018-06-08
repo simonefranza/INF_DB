@@ -40,11 +40,10 @@ public class Start extends HttpServlet {
 		writer.println("Rating:<input type='text' name='rRating'/>");
 		writer.println("<input type='submit' value='Insert Rating'/>");
 		writer.println("</form>");
-		writer.println("<form method='get' action='DeleteRating'>");
-		writer.println("<h2>Delete the rating of one person for one kind of beer:</h2>");
+		writer.println("<form method='get' action='DeleteCustomer'>");
+		writer.println("<h2>Delete a customer and all the related data:</h2>");
 		writer.println("CustomerId:<input type='text' name='customerId'/>");
-		writer.println("BeerId:<input type='text' name='beerId'/>");
-		writer.println("<input type='submit' value='Delete this rating'/>");
+		writer.println("<input type='submit' value='Delete this customer'/>");
 		writer.println("</form>");
 		writer.println("<form method='get' action='GetCustomerProduct'>");
 		writer.println("<h2>Get all the customer who bought at least the specified number of products over all their transactions:</h2>");

@@ -110,7 +110,7 @@ public class InsertRating extends HttpServlet {
 		}
 		catch(ClassNotFoundException exc) {
 			exc.printStackTrace();
-			printMsg("Can not insert a rating : no JDBC driver found!", writer, request);
+			printMsg("Cannot insert the rating : no JDBC driver found!", writer, request);
 			return;
 		}
 		
@@ -136,7 +136,7 @@ public class InsertRating extends HttpServlet {
 			String insertSqlStmt = "INSERT INTO rating VALUES (" + CId + "," + BId + "," + RRating + ");";
 			statement.executeUpdate(insertSqlStmt);
 			
-			printMsg("Transaction inserted!", writer, request);
+			printMsg("Transaction successfully inserted!", writer, request);
 		}
 		catch(SQLException exc) {
 			exc.printStackTrace();
@@ -149,7 +149,7 @@ public class InsertRating extends HttpServlet {
 		writer.close();
 	}
 	private void printMsg(String msg, PrintWriter writer, HttpServletRequest request) {
-		writer.write("<h1>" + msg + "</h1>\n");
+		writer.write("<h3>" + msg + "</h3>\n");
 		writer.write("<a href = \"" + request.getHeader("Referer") + "\">Back</a>\n"); writer.write("</body>");
 		writer.write("</html>");
 		}
