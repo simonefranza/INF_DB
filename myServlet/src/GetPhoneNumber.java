@@ -1,5 +1,3 @@
-
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -7,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,21 +21,20 @@ public class GetPhoneNumber extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html");
 		PrintWriter writer = response.getWriter();
-		
 		writer.println("<html>");
 		writer.println("<head><title>Get Numbers</title>");
-		writer.println("<style>table, th, td {text-align:center; border: 1px solid black; border-collapse: collapse; padding: 5px;}</style></head>");
+		writer.println("<style>table, th, td {text-align:center; border: 1px solid black; "
+				+ "border-collapse: collapse; padding: 5px;}</style></head>");
 		writer.println("<body>");
 		writer.println("<h1>Get the telephone numbers of those customer who bought the specified beer:</h1>");
 		
-		
 		// Get form data and check if text is empty or not
 		String BName = request.getParameter("beerName");
-
 		
 		if((BName == null) || (BName.length() == 0)) {
 			printMsg("You need to enter a beer name!", writer, request);
@@ -65,16 +61,16 @@ public class GetPhoneNumber extends HttpServlet {
 			ResultSet testCity = statement.executeQuery("SELECT * FROM beer WHERE BName ='" + BName + "'");
 			
 			if(!testCity.next()) {
-				printMsg("Cannot execute with the query: the specified beer name is not available in the database!", writer, request);
+				printMsg("Cannot execute with the query: the specified beer name is not available "
+						+ "in the database!", writer, request);
 				return;
 			}
 			
-			String myQuery = "SELECT DISTINCT customer.CId, CName, CNumber FROM customer, transaction, beer WHERE " 
-					+ "customer.CId = transaction.CId AND beer.BId = transaction.BId AND BName = '" + BName 
-					+ "' ORDER BY customer.CId ASC"; 
-			
+			String myQuery = "SELECT DISTINCT customer.CId, CName, CNumber FROM customer, "
+					+ "transaction, beer WHERE customer.CId = transaction.CId AND "
+					+ "beer.BId = transaction.BId AND BName = '" + BName + "' ORDER BY "
+					+ "customer.CId ASC"; // Select from multiple relations is in this query		
 			ResultSet result = statement.executeQuery(myQuery);
-			
 			boolean exist = false;
 			writer.println("<table>");
 			
@@ -115,7 +111,6 @@ public class GetPhoneNumber extends HttpServlet {
 			printMsg("Cannot search beer: database error!", writer, request);
 		}
 				
-		
 		writer.println("</body>");
 		writer.println("</html>");
 		writer.close();
@@ -126,5 +121,4 @@ public class GetPhoneNumber extends HttpServlet {
 		writer.write("</body>");
 		writer.write("</html>");
 	}
-
 }

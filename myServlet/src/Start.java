@@ -1,5 +1,3 @@
-
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,11 +23,11 @@ public class Start extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		
 		response.setContentType("text/html");
 		PrintWriter writer = response.getWriter();
-
 		writer.println("<html>");
 		writer.println("<head><title>Overview Servlet</title></head>");
 		writer.println("<body>");
@@ -46,24 +44,25 @@ public class Start extends HttpServlet {
 		writer.println("<input type='submit' value='Delete this customer'/>");
 		writer.println("</form>");
 		writer.println("<form method='get' action='GetCustomerProduct'>");
-		writer.println("<h2>Get all the customer who bought at least the specified number of products over all their transactions:</h2>");
+		writer.println("<h2>Get all the customer who bought at least the specified "
+				+ "number of products over all their transactions:</h2>");
 		writer.println("Amount of products:<input type='text' name='nProduct'/>");
 		writer.println("<input type='submit' value='Get customers'/>");
 		writer.println("</form>");
 		writer.println("<form method='get' action='GetRatingCity'>");
-		writer.println("<h2>Get the average rating given by the costumer living in the specified city:</h2>");
+		writer.println("<h2>Get the average rating given by the costumer living in the "
+				+ "specified city:</h2>");
 		writer.println("City:<input type='text' name='city'/>");
 		writer.println("<input type='submit' value='Get average ratings'/>");
 		writer.println("</form>");
 		writer.println("<form method='get' action='GetPhoneNumber'>");
-		writer.println("<h2>Get the telephone numbers of those customer who bought the specified beer:</h2>");
+		writer.println("<h2>Get the telephone numbers of those customer who bought "
+				+ "the specified beer:</h2>");
 		writer.println("BeerName:<input type='text' name='beerName'/>");
 		writer.println("<input type='submit' value='Get telephone numbers'/>");
 		writer.println("</form>");
 		writer.println("</body>");
 		writer.println("</html>");
-		
 		writer.close();
 	}
-
 }

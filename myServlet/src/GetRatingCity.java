@@ -1,5 +1,3 @@
-
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -7,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,22 +21,21 @@ public class GetRatingCity extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html");
 		PrintWriter writer = response.getWriter();
-		
 		writer.println("<html>");
 		writer.println("<head><title>Get Ratings</title>");
-		writer.println("<style>table, th, td {text-align:center; border: 1px solid black; border-collapse: collapse; padding: 5px;}</style></head>");
+		writer.println("<style>table, th, td {text-align:center; border: 1px solid black; "
+				+ "border-collapse: collapse; padding: 5px;}</style></head>");
 		writer.println("<body>");
-		writer.println("<h1>Get the average rating given by the costumer living in the specified city:</h1>");
-		
+		writer.println("<h1>Get the average rating given by the costumer living in the specified city:</h1>");	
 		
 		// Get form data and check if text is empty or not
 		String CCity = request.getParameter("city");
 
-		
 		if((CCity == null) || (CCity.length() == 0)) {
 			printMsg("You need to enter a city!", writer, request);
 			return;
@@ -58,22 +54,18 @@ public class GetRatingCity extends HttpServlet {
 		try {
 			Connection connection_;
 			connection_ = DriverManager.getConnection("jdbc:mysql://localhost/01530693_beer", "student", "student");
-			
 			Statement statement = connection_.createStatement(); 
 			
 			// Check if city is in the database
 			ResultSet testCity = statement.executeQuery("SELECT * FROM customer WHERE CCity ='" + CCity + "'");
-			
 			if(!testCity.next()) {
 				printMsg("Cannot execute with the query: the specified city is not available in the database!", writer, request);
 				return;
-			}
-			
-			String myQuery = "SELECT customer.CId, CName, CCity, ROUND(AVG(RRating),2) as AverageRating FROM customer, " 
-			+ " rating WHERE customer.CId = rating.CId AND CCity = '" + CCity + "' GROUP BY rating.CId ORDER BY customer.CId ASC"; // Select from multiple relations, GROUP BY are in this query
-			
-			ResultSet result = statement.executeQuery(myQuery);
-			
+			}	
+			String myQuery = "SELECT customer.CId, CName, CCity, ROUND(AVG(RRating),2) as "
+					+ "AverageRating FROM customer, rating WHERE customer.CId = rating.CId "
+					+ "AND CCity = '" + CCity + "' GROUP BY rating.CId ORDER BY customer.CId ASC"; // Select from multiple relations, GROUP BY are in this query		
+			ResultSet result = statement.executeQuery(myQuery);	
 			boolean exist = false;
 			writer.println("<table>");
 			
@@ -116,8 +108,7 @@ public class GetRatingCity extends HttpServlet {
 			exc.printStackTrace();
 			printMsg("Cannot search rating: database error!", writer, request);
 		}
-				
-		
+					
 		writer.println("</body>");
 		writer.println("</html>");
 		writer.close();
@@ -128,5 +119,4 @@ public class GetRatingCity extends HttpServlet {
 		writer.write("</body>");
 		writer.write("</html>");
 	}
-
 }

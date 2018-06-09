@@ -1,5 +1,3 @@
-
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -7,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,27 +21,26 @@ public class GetCustomerProduct extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html");
 		PrintWriter writer = response.getWriter();
-		
 		writer.println("<html>");
 		writer.println("<head><title>Get Customer</title>");
-		writer.println("<style>table, th, td {text-align:center; border: 1px solid black; border-collapse: collapse; padding: 5px;}</style></head>");
+		writer.println("<style>table, th, td {text-align:center; border: 1px solid black; "
+				+ "border-collapse: collapse; padding: 5px;}</style></head>");
 		writer.println("<body>");
-		writer.println("<h1>Get all the customer who bought at least the specified number of products over all their transactions:</h1>");
-		
+		writer.println("<h1>Get all the customer who bought at least the specified number " 
+				+ "of products over all their transactions:</h1>");	
 		
 		// Get form data and check if text is empty or not
 		String NProdStr = request.getParameter("nProduct");
-
 		
 		if((NProdStr == null) || (NProdStr.length() == 0)) {
 			printMsg("You need to enter a number of products!", writer, request);
 			return;
-		}
-		
+		}	
 		
 		// Parse number of products to integer
 		int NProd;
@@ -63,7 +59,6 @@ public class GetCustomerProduct extends HttpServlet {
 			printMsg("The number of products needs to be positive!", writer, request);
 			return;
 		}
-
 		
 		// Connect to the database
 		try {
@@ -77,16 +72,13 @@ public class GetCustomerProduct extends HttpServlet {
 		
 		try {
 			Connection connection_;
-			connection_ = DriverManager.getConnection("jdbc:mysql://localhost/01530693_beer", "student", "student");
-			
+			connection_ = DriverManager.getConnection("jdbc:mysql://localhost/01530693_beer", "student", "student");	
 			Statement statement = connection_.createStatement(); 
-			
-			String myQuery = "SELECT customer.CId, CName, CCity, CAge, CNumber, SUM(TQnt) as NProduct FROM customer," 
-			 + " transaction WHERE customer.CId = transaction.CId GROUP BY transaction.CId HAVING SUM(TQnt)>" + NProd 
-			 + " ORDER BY customer.CId ASC"; // Select from multiple relations, GROUP BY and HAVING are in this query
+			String myQuery = "SELECT customer.CId, CName, CCity, CAge, CNumber, SUM(TQnt) as "
+					+ "NProduct FROM customer, transaction WHERE customer.CId = transaction.CId " 
+					+ "GROUP BY transaction.CId HAVING SUM(TQnt)>" + NProd + " ORDER BY customer.CId ASC"; // Select from multiple relations, GROUP BY and HAVING are in this query
 			
 			ResultSet result = statement.executeQuery(myQuery);
-			
 			boolean exist = false;
 			writer.println("<table>");
 			
@@ -108,8 +100,7 @@ public class GetCustomerProduct extends HttpServlet {
 				writer.println("<td>" + result.getString("CNumber") + "</td>"); 
 				writer.println("<td>" + result.getInt("NProduct") + "</td>"); 
 				writer.println("</tr>");
-			}
-			
+			}	
 			while (result.next())
 			{
 			writer.println("<tr>");
@@ -136,7 +127,6 @@ public class GetCustomerProduct extends HttpServlet {
 			printMsg("Cannot search customer: database error!", writer, request);
 		}
 				
-		
 		writer.println("</body>");
 		writer.println("</html>");
 		writer.close();
@@ -147,5 +137,4 @@ public class GetCustomerProduct extends HttpServlet {
 		writer.write("</body>");
 		writer.write("</html>");
 	}
-
 }

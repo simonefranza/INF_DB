@@ -1,5 +1,3 @@
-
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -23,26 +21,23 @@ public class DeleteCustomer extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html");
 		PrintWriter writer = response.getWriter();
-		
 		writer.println("<html>");
 		writer.println("<head><title>Delete Customer</title></head>");
 		writer.println("<body>");
 		writer.println("<h1>Delete Customer and all related data!</h1>");
 		
-		
 		// Get form data and check if text is empty or not
 		String CIdStr = request.getParameter("customerId");
-
 		
 		if((CIdStr == null) || (CIdStr.length() == 0)) {
 			printMsg("Cannot delete a user with no user Id!", writer, request);
 			return;
-		}
-		
+		}	
 		
 		// Parse IDs and rating to integer
 		int CId;
@@ -77,26 +72,21 @@ public class DeleteCustomer extends HttpServlet {
 			Connection connection_;
 			connection_ = DriverManager.getConnection("jdbc:mysql://localhost/01530693_beer", "student", "student");
 			Statement statement = connection_.createStatement(); // Referential integrity gets checked here!!
-			
 			ResultSet result = statement.executeQuery("SELECT * FROM customer WHERE CId =" + CId);
 			
 			if(!result.next()) {
 				printMsg("Cannot delete a customer which does not exist!", writer, request);
 				return;
 			}
-			
-			
-			String deleteSqlStmt = "DELETE FROM customer WHERE CId = " + CId;
+			String deleteSqlStmt = "DELETE FROM customer WHERE CId = " + CId; //Customer and delete cascade happen here
 			statement.executeUpdate(deleteSqlStmt);
-			
 			printMsg("Customer and all related data successfully deleted!", writer, request);
 		}
 		catch(SQLException exc) {
 			exc.printStackTrace();
 			printMsg("Cannot delete customer: database error!", writer, request);
 		}
-				
-		
+					
 		writer.println("</body>");
 		writer.println("</html>");
 		writer.close();
@@ -106,5 +96,4 @@ public class DeleteCustomer extends HttpServlet {
 		writer.write("<a href = \"" + request.getHeader("Referer") + "\">Back</a>\n"); writer.write("</body>");
 		writer.write("</html>");
 	}
-
 }

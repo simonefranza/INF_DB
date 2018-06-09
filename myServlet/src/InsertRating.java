@@ -1,5 +1,3 @@
-
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -23,24 +21,20 @@ public class InsertRating extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-
 		response.setContentType("text/html");
 		PrintWriter writer = response.getWriter();
-		
 		writer.println("<html>");
 		writer.println("<head><title>Insert Rating</title></head>");
 		writer.println("<body>");
-		writer.println("<h1>Insert Rating!</h1>");
-		
+		writer.println("<h1>Insert Rating!</h1>");	
 		
 		// Get form data and check if text is empty or not
 		String CIdStr = request.getParameter("customerId");
 		String BIdStr = request.getParameter("beerId");
 		String RRatingStr = request.getParameter("rRating");
-
 		
 		if((CIdStr == null) || (CIdStr.length() == 0)) {
 			printMsg("Cannot insert a rating with no customer Id!", writer, request);
@@ -56,8 +50,7 @@ public class InsertRating extends HttpServlet {
 			printMsg("Cannot insert a rating with no rating!", writer, request);
 			return;
 		}
-		
-		
+	
 		// Parse IDs and rating to integer
 		int CId, BId, RRating;
 		
@@ -117,9 +110,10 @@ public class InsertRating extends HttpServlet {
 		try {
 			Connection connection_;
 			connection_ = DriverManager.getConnection("jdbc:mysql://localhost/01530693_beer", "student", "student");
-			Statement statement = connection_.createStatement(); // Referential integrity gets checked here!!
+			Statement statement = connection_.createStatement(); 
 			
-			ResultSet resultC = statement.executeQuery("SELECT * FROM customer WHERE CId =" + CId);
+			ResultSet resultC = statement.executeQuery("SELECT * FROM customer WHERE CId =" 
+			+ CId); // Referential integrity gets checked here!!
 			
 			if(!resultC.next()) {
 				printMsg("Cannot insert the rating: no such customer!", writer, request);
@@ -133,16 +127,21 @@ public class InsertRating extends HttpServlet {
 				return;
 			}
 			
-			ResultSet resultA = statement.executeQuery("SELECT * FROM rating WHERE CId =" + CId + " AND BId = " + BId);
+			ResultSet resultA = statement.executeQuery("SELECT * FROM rating WHERE CId =" + CId 
+					+ " AND BId = " + BId);
 			
+			//If rating already exists, it gets updated
 			if(resultA.next()) {
-				String insertSqlStmt = "UPDATE rating SET RRating = " + RRating + " WHERE CId = " + CId + " AND BId = " + BId;
+				String insertSqlStmt = "UPDATE rating SET RRating = " + RRating + " WHERE CId = " 
+			+ CId + " AND BId = " + BId; // Database gets updated here
 				statement.executeUpdate(insertSqlStmt);
 				
 				printMsg("Rating updated successfully!", writer, request);
 			}
+			//If rating doesn't exist yet, it gets inserted into the database
 			else {
-				String insertSqlStmt = "INSERT INTO rating VALUES (" + CId + "," + BId + "," + RRating + ");";
+				String insertSqlStmt = "INSERT INTO rating VALUES (" + CId + "," + BId + "," 
+			+ RRating + ");"; //Values are inserted here
 				statement.executeUpdate(insertSqlStmt);
 			
 				printMsg("Rating successfully inserted!", writer, request);
@@ -152,8 +151,7 @@ public class InsertRating extends HttpServlet {
 			exc.printStackTrace();
 			printMsg("Cannot insert rating: database error!", writer, request);
 		}
-				
-		
+			
 		writer.println("</body>");
 		writer.println("</html>");
 		writer.close();
